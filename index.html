@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://kit.fontawesome.com/4f2a80e093.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet" />
+
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="main_div">
+    <div class="music_container">
+      <h2 id="title">Baazi</h2>
+      <h3 id="artist">King</h3>
+
+      <div class="img-container">
+        <img src="MUSIC/IMAGES/Baazi.jpg" alt="cover" />
+      </div>
+      <audio src="MUSIC/Baazi.mp3"></audio>
+<!----Progress bar  --->
+<div class="progressbar_container" id="progress_container">
+<div class="progress_duration_meter">
+<div id="current_time">0:00</div>
+<div id="duration">3:51</div>
+</div>
+<div class="progress_div" id="progress_div">
+<div class="progress" id="progress"></div>
+</div>
+</div>
+
+
+      <!---- Controls Tag --->
+      <div class="music_controls">
+        <i class="fas fa-solid fa-angles-left" id="prev" title="Previous"></i>
+        <i class="fas fa-solid fa-play main-button" id="play" title="Play / Pause"></i>
+        <i class="fas fa-solid fa-angles-right" id="next" title="Next"></i>
+      </div>
+    </div>
+  </div>
+  <script> 
+    const music = document.querySelector("audio");
+    const img = document.querySelector("img");
+    const play = document.getElementById("play");
+    const artist = document.getElementById("artist");
+    const title = document.getElementById("title");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+
+
+    let progress = document.getElementById("progress");
+         let total_duration =document.getElementById("duration");
+         let current_time = document.getElementById("current_time");
+
+ const progress_div = document.getElementById("progress_div");
+
+
+
+    const songs = [
+      {
+        name: "Baazi",
+        title: "Baazi",
+        artist: "KING",
+      },
+      {
+        name: "Shayad",
+        title: "Shayad",
+        artist: "Arijit Singh",
+      },
+      {
+        name: "Dil Mere - Cover By Imdad -- The Local Train",
+        title: "Dil Mere",
+        artist: "The Local Train",
+      },
+      {
+        name: "Aao Milo Chalo",
+        title: "Aao Milo Chalo",
+        artist: "Sultan Khan",
+      },
+      {
+        name: "Aaoge Jab Tum",
+        title: "Aaoge Jab Tum",
+        artist: "Rashid Khan",
+      },
+      {
+        name: "Bhool Bhulaiyaa",
+        title: "Bhool Bhulaiyaa",
+        artist: "Neeraj Shridhar",
+      },
+      {
+        name: "Dil Chahta Hai",
+        title: "Dil Chahta Hai",
+        artist: "Shankar",
+      },
+      {
+        name: "Dil Dhadakne Do",
+        title: "Dil Dhadakne Do",
+        artist: "Farhan Akhtar",
+      },
+      {
+        name: "Ilahi",
+        title: "Ilahi",
+        artist: "Arijit Singh",
+      },
+      {
+        name: "Labon Ko",
+        title: "Labon Ko",
+        artist: "KK",
+      },
+      {
+        name: "Tu Hi Meri Shab Hai",
+        title: "Tu Hi Meri Shab",
+        artist: "KK",
+      },
+      {
+        name: "Yaaron",
+        title: "Yaaron",
+        artist: "KK",
+      },
+      {
+        name: "Yun Hi Chala Chal",
+        title: "Yun Hi Chala Chal",
+        artist: "Kailash Kher",
+      },
+      {
+        name: "Zindagi Do Pal Ki",
+        title: "Zindagi Do Pal Ki",
+        artist: "KK",
+      },
+    ];
+
+    // for play function
+
+    let isPlaying = false;
+    const playMusic = () => {
+      isPlaying = true;
+      music.play();
+      play.classList.replace("fa-play", "fa-pause");
+      img.classList.add("animation");
+    };
+ 
+
+    // for pause function
+    const pauseMusic = () => {
+      isPlaying = false;
+      music.pause();
+      play.classList.replace("fa-pause", "fa-play");
+      img.classList.remove("animation");
+    };
+
+
+    play.addEventListener("click", () => {
+      isPlaying ? pauseMusic() : playMusic();
+
+    });
+
+
+    // chnaging the music data
+    const loadSong = (songs) => {
+      title.textContent = songs.title;
+      artist.textContent = songs.artist;
+      music.src = "MUSIC/" + songs.name + ".mp3";
+      img.src = "MUSIC/IMAGES/" + songs.name + ".jpg";
+    };
+    songIndex = 0;
+
+    const nextSong = () => {
+      songIndex = (songIndex + 1) % songs.length;
+      loadSong(songs[songIndex]);
+      music.play();
+      img.classList.add("animation");
+      play.classList.replace("fa-play", "fa-pause");
+    };
+    const prevSong = () => {
+      songIndex = (songIndex - 1 + songs.length) % songs.length;
+      loadSong(songs[songIndex]);
+      music.play();
+      img.classList.add("animation");
+      play.classList.replace("fa-play", "fa-pause");
+    };
+
+// music play progress 
+music.addEventListener("timeupdate",(event) => {
+const {currentTime, duration}= event.srcElement;
+let progress_time = ( currentTime / duration) * 100;
+progress.style.width= `${progress_time}%`;
+// music duration update 
+
+let min_duration = Math.floor(duration/60);
+let sec_duration = Math.floor(duration % 60); 
+if(sec_duration <10 ){
+  sec_duration=`0${sec_duration}`;
+}
+let  tot_duration=`${min_duration}:${sec_duration}`;
+if(duration){
+  total_duration.textContent= `${tot_duration}`;
+}
+// current duration update 
+
+
+let min_currentTime = Math.floor(currentTime/60);
+let sec_currentTime = Math.floor(currentTime % 60); 
+
+if(sec_currentTime < 10 ){
+  sec_currentTime=`0${sec_currentTime}`;
+}
+let  tot_currentTime=`${min_currentTime}:${sec_currentTime}`;
+current_time.textContent= `${tot_currentTime}`;
+});
+
+
+// progress on click functionality
+progress_div.addEventListener("click", (event)=>{
+  const {duration} = music;
+let move_progress = (event.offsetX/ event.srcElement.clientWidth) * duration ;
+music.currentTime=move_progress;
+});
+
+
+// play next song after song finishes
+music.addEventListener("ended",nextSong);
+
+    next.addEventListener("click", nextSong);
+    prev.addEventListener("click", prevSong);
+  </script>
+</body>
+
+</html>
